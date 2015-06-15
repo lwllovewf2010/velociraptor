@@ -28,6 +28,9 @@ android/gen/
 *.iml
 out/
 com_crashlytics_export_strings.xml
+.idea/workspace.xml
+.idea/libraries
+.DS_Store
 
 ## Eclipse
 .classpath
