@@ -6,7 +6,7 @@
  * 
  * Any unauthorised redistribution or reproduction of part, or all, of the contents of this 
  * application in any form is prohibited under UK Copyright Law. You may not, except with the 
- * express written permission of CMCL Innovations, distribute or commercially exploit this
+ * express written permission of M Hillman, distribute or commercially exploit this
  * application or it's content. All other rights reserved.
  * 
  * For more information please contact business<@>thisishillman.co.uk
@@ -31,6 +31,9 @@ public class Meta {
 	
 	// Current version
 	public static final String VERSION = "0.01";
+	
+	// Debug flag (for developers only, pass -D argument)
+	public static boolean DEBUG = false;
 
 }
 //End of class

@@ -16,8 +16,8 @@ package uk.co.thisishillman.desktop;
 import java.util.HashSet;
 import java.util.Set;
 
-import uk.co.thisishillman.EntryPoint;
 import uk.co.thisishillman.Meta;
+import uk.co.thisishillman.menu.FadeScreen;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -40,19 +40,36 @@ public class DesktopLauncher {
 	public static void main (String[] args) {
 		
 		// Add arguments to hash set
-		for(String arg : args) {
-			ARG_SET.add(arg);
-		}
+		for(String arg : args) ARG_SET.add(arg);
+		
+		readArguments();
 		
 		// Set config and launch
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		
 		config.title      = Meta.PROJECT_TITLE + " - " + Meta.VERSION;
 		config.resizable  = false;
-		config.width      = 1280;
-		config.height     = 1024;
+		config.width      = 800;
+		config.height     = 600;
 		
-		new LwjglApplication(new EntryPoint(), config);
+		new LwjglApplication(new FadeScreen("image.png"), config);
+	}
+	
+	/**
+	 * Processes command line arguments
+	 */
+	private static void readArguments() {
+		for(String arg : ARG_SET) {
+			
+			switch(arg) {
+				
+				case "-d" :
+				case "-D" :
+					Meta.DEBUG = true;
+					System.out.println("Running in hard-coded debug mode!");
+				break;
+			}
+		}
 	}
 	
 }
