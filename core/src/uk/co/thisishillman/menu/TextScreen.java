@@ -15,52 +15,50 @@ package uk.co.thisishillman.menu;
 
 import uk.co.thisishillman.text.FontStore;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 /**
  * Displays a single screen with centre aligned text.
  * 
  * @author Michael Hillman
  */
-public class TextScreen implements ApplicationListener {
+public class TextScreen implements Screen {
 
-	// For layout work
-	private final GlyphLayout layout;
-	
-	// Text to draw
+	// Label text
 	private final String text;
 	
-	// Sprite batch for drawing
-	private SpriteBatch batch;
+	// Main stage
+	private final Stage stage;
 	
-	// Font to use for text
-	private BitmapFont font;
-
-	// Positions of text on screen
-	private float xPos, yPos;
+	// For text display
+	private Label label;
 	
 	/**
 	 * Initialise a new TextScreen with the input text
+	 * 
+	 * @param stage
+	 * @param text
 	 */
-	public TextScreen(String text) {
-		this.text   = text;
-		this.layout = new GlyphLayout();
+	public TextScreen(Stage stage, String text) {
+		this.stage = stage;
+		this.text = text;
 	}
 	
 	/** 
 	 * Create sprite batches and initialise fonts
 	 */
 	@Override
-	public void create() {
-		font  = FontStore.getFont("minecraftia", 16); 
-		batch = new SpriteBatch();
+	public void show() {
+		BitmapFont font  = FontStore.getFont("minecraftia", 14); 
+		this.label = new Label(text, new LabelStyle(font, Color.WHITE));
 		
-		layout.setText(font, text);
+		stage.addActor(label);
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
 
@@ -69,30 +67,33 @@ public class TextScreen implements ApplicationListener {
 	 */
 	@Override
 	public void dispose() {
-		font.dispose();
-		batch.dispose();
+		// Nothing 
 	}
 	
+	/**
+	 * Calls dispose()
+	 */
+	@Override
+	public void hide() {
+		dispose();
+	}
+
 	/**
 	 * Re-center after resize
 	 */
 	@Override
 	public void resize(int width, int height) {
-		xPos = ( width - layout.width ) / 2;
-		yPos = (height - layout.height) / 2;
+		float xPos = ( width - label.getWidth()  ) / 2;
+		float yPos = (height - label.getHeight() ) / 2;
+		label.setBounds(xPos, yPos, label.getWidth(), label.getHeight());
 	}
 
 	/**
 	 * Main render loop, draws text on screen
 	 */
 	@Override
-	public void render() {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        batch.begin();
-        font.draw(batch, text, xPos, yPos);
-        batch.end();
+	public void render(float delta) {
+        //font.draw(batch, text, xPos, yPos);
 	}
 
 	// Not used

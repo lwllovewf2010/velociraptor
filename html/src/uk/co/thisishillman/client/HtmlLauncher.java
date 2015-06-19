@@ -1,9 +1,10 @@
 package uk.co.thisishillman.client;
 
+import uk.co.thisishillman.MainGame;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import uk.co.thisishillman.EntryPoint;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -14,6 +15,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener getApplicationListener () {
-                return new EntryPoint();
+                return new MainGame();
         }
 }
