@@ -16,6 +16,7 @@ package uk.co.thisishillman;
 import uk.co.thisishillman.menu.MainMenu;
 import uk.co.thisishillman.menu.SplashRotator;
 import uk.co.thisishillman.menu.SplashScreen;
+import uk.co.thisishillman.menu.UITest;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;

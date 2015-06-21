@@ -16,8 +16,8 @@ package uk.co.thisishillman.desktop;
 import java.util.HashSet;
 import java.util.Set;
 
-import uk.co.thisishillman.MainGame;
 import uk.co.thisishillman.Meta;
+import uk.co.thisishillman.menu.UITest;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -52,7 +52,7 @@ public class DesktopLauncher {
 		config.width      = 800;
 		config.height     = 600;
 		
-		new LwjglApplication(new MainGame(), config);
+		new LwjglApplication(new UITest(), config);
 	}
 	
 	/**
