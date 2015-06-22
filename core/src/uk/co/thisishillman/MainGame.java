@@ -16,7 +16,6 @@ package uk.co.thisishillman;
 import uk.co.thisishillman.menu.MainMenu;
 import uk.co.thisishillman.menu.SplashRotator;
 import uk.co.thisishillman.menu.SplashScreen;
-import uk.co.thisishillman.menu.UITest;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -55,7 +54,7 @@ public class MainGame extends Game  {
 	 * 
 	 */
 	public void moveToMainMenu() {
-		MainMenu menu = new MainMenu(stage);
+		MainMenu menu = new MainMenu(stage, this);
 		this.setScreen(menu);
 		menu.render(0.0f);
 	}
@@ -88,6 +87,7 @@ public class MainGame extends Game  {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
+        stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         splashRotator.update(this);
 	}

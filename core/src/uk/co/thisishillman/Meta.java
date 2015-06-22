@@ -13,10 +13,17 @@
  */
 package uk.co.thisishillman;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  * Class containing final static variables used as program-wide meta data.
  * 
- * @author M Hillman
+ * @author Michael Hillman
  */
 public class Meta {
 	
@@ -34,6 +41,28 @@ public class Meta {
 	
 	// Debug flag (for developers only, pass -D argument)
 	public static boolean DEBUG = false;
+	
+	// Location of folder containing JAR file
+	public static Path INSTALL_DIR;
+	
+	// Get the installation directory
+	static {
+		determineInstallDirectory();
+		System.out.println(INSTALL_DIR);
+	}
+	
+	/** 
+     * Determines the installation directory (where this jar file is).
+     */
+    private static void determineInstallDirectory() {
+        try {
+            URI location = Meta.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+            INSTALL_DIR = Paths.get( new File(location).getParentFile().getAbsolutePath() );
+            
+        } catch(URISyntaxException excep) {
+            System.err.println("ERROR: Cannot determine the installation directory.");
+        }
+    }
 
 }
 //End of class

@@ -13,16 +13,19 @@
  */
 package uk.co.thisishillman.menu;
 
+import uk.co.thisishillman.MainGame;
 import uk.co.thisishillman.text.FontStore;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
  * Displays a single screen with centre aligned text.
@@ -31,28 +34,30 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
  */
 public class MainMenu implements Screen {
 
-	// Label text
-	private final String text;
-	
 	// Main stage
 	private final Stage stage;
 	
-	// For text display
-	private Label label;
+	// Game object
+	private final MainGame game;
 	
 	// Looping background music
 	private Sound backgroundMusic;
+	
+	// UI Labels
+	private Label newGameLabel, optionsLabel, exitLabel;
+	
+	// UI Label styles
+	private LabelStyle labelStyle, hoverStyle;
 	
 	/**
 	 * Initialise a new TextScreen with the input text
 	 * 
 	 * @param stage
-	 * @param text
+	 * @param game
 	 */
-	public MainMenu(Stage stage) {
+	public MainMenu(Stage stage, MainGame game) {
 		this.stage = stage;
-		
-		this.text = "New Game  |  Options  |  Credits  |  Exit";
+		this.game = game;
 	}
 	
 	/** 
@@ -60,16 +65,65 @@ public class MainMenu implements Screen {
 	 */
 	@Override
 	public void show() {
-		// Setup menu label
-		BitmapFont font  = FontStore.getFont("minecraftia", 16); 
-		this.label = new Label(text, new LabelStyle(font, Color.WHITE));
-		stage.addActor(label);
-		
 		// Setup audio
 		backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("audio/protofunk.ogg"));
 		
 		// Force re-size update
 		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		
+		// Init labels
+		Gdx.input.setInputProcessor(stage);
+		initialiseLabels();
+	}
+	
+	/**
+	 * 
+	 */
+	private void initialiseLabels() {
+		labelStyle = new LabelStyle(FontStore.getFont("minecraftia", 16), Color.WHITE);
+		hoverStyle = new LabelStyle(FontStore.getFont("minecraftia", 14), Color.GRAY);
+		
+		exitLabel = new Label("Exit", labelStyle);
+		exitLabel.addListener(new ClickListener() {
+			@Override
+			public void enter(InputEvent ev, float x, float y, int pt, Actor from) {
+				exitLabel.setStyle(hoverStyle);
+			}
+			
+			@Override
+			public void exit(InputEvent ev, float x, float y, int pt, Actor to) {
+				exitLabel.setStyle(labelStyle);
+			}
+		});
+		stage.addActor(exitLabel);
+		
+		optionsLabel = new Label("Options", labelStyle);
+		optionsLabel.addListener(new ClickListener() {
+			@Override
+			public void enter(InputEvent ev, float x, float y, int pt, Actor from) {
+				optionsLabel.setStyle(hoverStyle);
+			}
+			
+			@Override
+			public void exit(InputEvent ev, float x, float y, int pt, Actor to) {
+				optionsLabel.setStyle(labelStyle);
+			}
+		});
+		stage.addActor(optionsLabel);
+		
+		newGameLabel = new Label("New Game", labelStyle);
+		newGameLabel.addListener(new ClickListener() {
+			@Override
+			public void enter(InputEvent ev, float x, float y, int pt, Actor from) {
+				newGameLabel.setStyle(hoverStyle);
+			}
+			
+			@Override
+			public void exit(InputEvent ev, float x, float y, int pt, Actor to) {
+				newGameLabel.setStyle(labelStyle);
+			}
+		});
+		stage.addActor(newGameLabel);
 	}
 
 	/**
@@ -94,7 +148,9 @@ public class MainMenu implements Screen {
 	 */
 	@Override
 	public void resize(int width, int height) {
-		label.setBounds(15, 15, label.getWidth(), label.getHeight());
+		if(exitLabel != null)    exitLabel.setBounds(   30, 15, 100, 30);
+		if(optionsLabel != null) optionsLabel.setBounds(30, 45, 100, 30);
+		if(newGameLabel != null) newGameLabel.setBounds(30, 75, 100, 30);
 	}
 
 	/**
