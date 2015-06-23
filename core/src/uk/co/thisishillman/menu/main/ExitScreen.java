@@ -11,119 +11,123 @@
  * 
  * For more information please contact business<@>thisishillman.co.uk
  */
-package uk.co.thisishillman.menu;
+package uk.co.thisishillman.menu.main;
 
-import uk.co.thisishillman.MainGame;
+import uk.co.thisishillman.Settings;
 import uk.co.thisishillman.text.FontStore;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 
 /**
- * Displays a single screen with centre aligned text.
+ * Displays a single screen for game exit confirmation
  * 
  * @author Michael Hillman
  */
-public class MainMenu implements Screen {
+public class ExitScreen implements Screen {
 
-	// Main stage
-	private final Stage stage;
-	
-	// Game object
-	private final MainGame game;
-	
-	// Looping background music
-	private Sound backgroundMusic;
+	// Main menu handler
+	private final MainMenuHandler handler;
 	
 	// UI Labels
-	private Label newGameLabel, optionsLabel, exitLabel;
+	private Label descLabel, yesLabel, noLabel;
 	
 	// UI Label styles
 	private LabelStyle labelStyle, hoverStyle;
 	
+	// Background texture
+	private Texture backingTex;
+	
+	// Background image
+	private Image background;
+	
 	/**
-	 * Initialise a new TextScreen with the input text
+	 * Initialise a new exit screen
 	 * 
-	 * @param stage
-	 * @param game
+	 * @param handler
 	 */
-	public MainMenu(Stage stage, MainGame game) {
-		this.stage = stage;
-		this.game = game;
+	public ExitScreen(MainMenuHandler handler) {
+		this.handler = handler;
 	}
 	
 	/** 
-	 * Create sprite batches and initialise fonts
+	 * Initialise assets and labels
 	 */
 	@Override
 	public void show() {
-		// Setup audio
-		backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("audio/protofunk.ogg"));
-		
-		// Force re-size update
-		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		
+		// Init background texture
+		this.backingTex = new Texture(Gdx.files.internal("images/background.jpg"));
+		this.background = new Image(backingTex);
+		this.handler.getStageObject().addActor(background);
+				
 		// Init labels
-		Gdx.input.setInputProcessor(stage);
 		initialiseLabels();
 	}
 	
 	/**
-	 * 
+	 * Initialise UI labels
 	 */
 	private void initialiseLabels() {
 		labelStyle = new LabelStyle(FontStore.getFont("minecraftia", 16), Color.WHITE);
 		hoverStyle = new LabelStyle(FontStore.getFont("minecraftia", 14), Color.GRAY);
 		
-		exitLabel = new Label("Exit", labelStyle);
-		exitLabel.addListener(new ClickListener() {
-			@Override
-			public void enter(InputEvent ev, float x, float y, int pt, Actor from) {
-				exitLabel.setStyle(hoverStyle);
-			}
-			
-			@Override
-			public void exit(InputEvent ev, float x, float y, int pt, Actor to) {
-				exitLabel.setStyle(labelStyle);
-			}
-		});
-		stage.addActor(exitLabel);
+		// Initialise description label
+		descLabel = new Label("Exit the game and return to your desktop?", labelStyle);
+		descLabel.setAlignment(Align.center);
+		this.handler.getStageObject().addActor(descLabel);
 		
-		optionsLabel = new Label("Options", labelStyle);
-		optionsLabel.addListener(new ClickListener() {
+		// Initialise yes label
+		yesLabel = new Label("Exit Game", labelStyle);
+		yesLabel.setAlignment(Align.right);
+		yesLabel.addListener(new ClickListener() {
 			@Override
 			public void enter(InputEvent ev, float x, float y, int pt, Actor from) {
-				optionsLabel.setStyle(hoverStyle);
+				yesLabel.setStyle(hoverStyle);
 			}
 			
 			@Override
 			public void exit(InputEvent ev, float x, float y, int pt, Actor to) {
-				optionsLabel.setStyle(labelStyle);
+				yesLabel.setStyle(labelStyle);
+			}
+			
+			@Override
+			public void clicked(InputEvent ev, float x, float y) {
+				Settings.saveSettings();
+				handler.getGameObject().dispose();
+				System.exit(0);
 			}
 		});
-		stage.addActor(optionsLabel);
+		this.handler.getStageObject().addActor(yesLabel);
 		
-		newGameLabel = new Label("New Game", labelStyle);
-		newGameLabel.addListener(new ClickListener() {
+		// Initialise no label
+		noLabel = new Label("Continue Playing", labelStyle);
+		noLabel.addListener(new ClickListener() {
 			@Override
 			public void enter(InputEvent ev, float x, float y, int pt, Actor from) {
-				newGameLabel.setStyle(hoverStyle);
+				noLabel.setStyle(hoverStyle);
 			}
 			
 			@Override
 			public void exit(InputEvent ev, float x, float y, int pt, Actor to) {
-				newGameLabel.setStyle(labelStyle);
+				noLabel.setStyle(labelStyle);
+			}
+			
+			@Override
+			public void clicked(InputEvent ev, float x, float y) {
+				handler.getClickSound().play(Settings.EFFECT_VOLUME);
+				handler.goToMainScreen();
 			}
 		});
-		stage.addActor(newGameLabel);
+		this.handler.getStageObject().addActor(noLabel);
 	}
 
 	/**
@@ -131,8 +135,7 @@ public class MainMenu implements Screen {
 	 */
 	@Override
 	public void dispose() {
-		backgroundMusic.dispose();
-		backgroundMusic = null;
+		if(backingTex != null) backingTex.dispose();
 	}
 	
 	/**
@@ -148,9 +151,11 @@ public class MainMenu implements Screen {
 	 */
 	@Override
 	public void resize(int width, int height) {
-		if(exitLabel != null)    exitLabel.setBounds(   30, 15, 100, 30);
-		if(optionsLabel != null) optionsLabel.setBounds(30, 45, 100, 30);
-		if(newGameLabel != null) newGameLabel.setBounds(30, 75, 100, 30);
+		if(descLabel != null)   descLabel.setBounds(15, (height / 2) - 10, width - 30, 20);
+		if(yesLabel != null)  	yesLabel.setBounds(width - 130, 25, 100, 30);
+		if(noLabel != null) 	noLabel.setBounds(30, 25, 200, 30);
+		
+		if(background != null) background.setBounds(0, 0, width, height);
 	}
 
 	/**
@@ -158,9 +163,7 @@ public class MainMenu implements Screen {
 	 */
 	@Override
 	public void render(float delta) {
-        if(backgroundMusic != null) {
-        	backgroundMusic.loop();
-        }
+		// Nothing!
 	}
 
 	// Not used

@@ -35,6 +35,12 @@ public class Settings {
 	// Properties object
 	private static Properties PROPERTIES;
 	
+	// ===== Common variables loaded in memory for easy access ===== //
+	public static float MUSIC_VOLUME = 0.5f;
+	
+	public static float EFFECT_VOLUME = 0.5f;
+	// ===== Common variables loaded in memory for easy access ===== //
+	
 	/**
 	 * Gets the property value with the input key (or null)
 	 * 
@@ -65,6 +71,10 @@ public class Settings {
 	 * Write the current properties object to disk.
 	 */
 	public static void saveSettings() {
+		if(PROPERTIES == null) initialiseProperties();
+		PROPERTIES.put("music_volume", Float.toString(MUSIC_VOLUME));
+		PROPERTIES.put("effect_volume", Float.toString(EFFECT_VOLUME));
+		
 		FileOutputStream out = null;
         
         try {
@@ -97,6 +107,8 @@ public class Settings {
 				fileReader = new FileReader(INI_FILE.toString());
 				PROPERTIES.load(fileReader);
 				
+				loadCommonVariables();
+				
 			} catch(IOException ioExcep) {
 				System.err.println("ERROR: Cannot read in settings.ini file!");
 				
@@ -108,6 +120,26 @@ public class Settings {
 				}
 			}
 			
+		}
+	}
+	
+	/**
+	 * Load common settings into memory
+	 */
+	private static void loadCommonVariables() {
+		
+		// Music volume
+		if( getSetting("music_volume") != null ) {
+			MUSIC_VOLUME = Float.parseFloat( getSetting("music_volume") );
+		} else {
+			PROPERTIES.put("music_volume", "0.5f");
+		}
+		
+		// Sound effect volume
+		if( getSetting("effect_volume") != null ) {
+			EFFECT_VOLUME = Float.parseFloat( getSetting("effect_volume") );
+		} else {
+			PROPERTIES.put("effect_volume", "0.5f");
 		}
 	}
 	

@@ -13,9 +13,9 @@
  */
 package uk.co.thisishillman;
 
-import uk.co.thisishillman.menu.MainMenu;
 import uk.co.thisishillman.menu.SplashRotator;
 import uk.co.thisishillman.menu.SplashScreen;
+import uk.co.thisishillman.menu.main.MainMenuHandler;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -31,6 +31,9 @@ public class MainGame extends Game  {
 
 	// Handles rotating splash screens
 	private SplashRotator splashRotator;
+	
+	// Main menu handler
+	private MainMenuHandler menuHandler;
 	
 	// Scene2D stage
 	private Stage stage;
@@ -54,9 +57,10 @@ public class MainGame extends Game  {
 	 * 
 	 */
 	public void moveToMainMenu() {
-		MainMenu menu = new MainMenu(stage, this);
-		this.setScreen(menu);
-		menu.render(0.0f);
+		splashRotator = null;
+		menuHandler = new MainMenuHandler(this, stage);
+		menuHandler.initialise();
+		menuHandler.goToMainScreen();
 	}
 	
 	/**
@@ -64,6 +68,7 @@ public class MainGame extends Game  {
 	 */
 	@Override
 	public void dispose() {
+		if(menuHandler != null) menuHandler.dispose();
 		stage.dispose();
 	}
 
@@ -78,7 +83,6 @@ public class MainGame extends Game  {
 		// TODO
 	}
 	
-
 	/**
 	 * Main draw loop
 	 */
@@ -89,7 +93,8 @@ public class MainGame extends Game  {
         
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-        splashRotator.update(this);
+        
+        if(splashRotator != null) splashRotator.update(this);
 	}
 
 	// Not used

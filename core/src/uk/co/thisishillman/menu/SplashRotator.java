@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 import uk.co.thisishillman.MainGame;
+import uk.co.thisishillman.Settings;
 
 import com.badlogic.gdx.audio.Sound;
 
@@ -99,7 +100,7 @@ public class SplashRotator {
 			
 			screenStart = (int) System.currentTimeMillis();
 			if(sfx != null) {
-				sfx.play();
+				sfx.play(Settings.EFFECT_VOLUME);
 			}
 			
 		}
