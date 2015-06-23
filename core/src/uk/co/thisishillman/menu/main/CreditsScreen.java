@@ -83,7 +83,11 @@ public class CreditsScreen implements Screen {
 		readCreditsFile();
 		
 		// Init scroll panel
-		//this.scroll = new ScrollPane(creditsLabel);
+		this.scroll = new ScrollPane(creditsLabel);
+		this.scroll.setForceScroll(true, true);
+		this.scroll.setScrollY(0);
+		this.scroll.setScrollX(0);
+		this.handler.getStageObject().addActor(scroll);
 	}
 	
 	/**
@@ -110,6 +114,11 @@ public class CreditsScreen implements Screen {
 			public void clicked(InputEvent ev, float x, float y) {
 				handler.getClickSound().play(Settings.EFFECT_VOLUME);
 				handler.goToMainScreen();
+				
+				returnLabel.remove();
+				creditsLabel.remove();
+				scroll.remove();
+				background.remove();
 			}
 		});
 		this.handler.getStageObject().addActor(returnLabel);
@@ -117,7 +126,8 @@ public class CreditsScreen implements Screen {
 		// Initialise Credits label
 		creditsLabel = new Label("", labelStyle);
 		creditsLabel.setAlignment(Align.center);
-		//creditsLabel.setFillParent(true);
+		creditsLabel.setFillParent(true);
+		
 		this.handler.getStageObject().addActor(creditsLabel);
 	}
 	
@@ -142,7 +152,7 @@ public class CreditsScreen implements Screen {
 			String line = null;
 			
 			while((line = buffReader.readLine()) != null) {
-				builder.append(line);
+				builder.append(line + "\n");
 			}
 			
 		} catch(IOException ioExcep) {
@@ -181,7 +191,7 @@ public class CreditsScreen implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		if(returnLabel != null) returnLabel.setBounds(width - 130, 25, 100, 30);
-		if(creditsLabel != null) creditsLabel.setBounds(100, height - 200, 50, 50);
+		if(scroll != null) scroll.setBounds(100, 150, width - 200, height - 150);
 		
 		if(background != null) background.setBounds(0, 0, width, height);
 	}

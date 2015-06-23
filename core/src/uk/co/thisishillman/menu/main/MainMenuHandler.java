@@ -68,7 +68,7 @@ public class MainMenuHandler {
 	public void initialise() {
 		// Setup audio
 		backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("audio/protofunk.ogg"));
-		backgroundMusic.loop(Settings.MUSIC_VOLUME);
+		//backgroundMusic.loop(Settings.MUSIC_VOLUME);
 		clickSound = Gdx.audio.newSound(Gdx.files.internal("audio/mouse_click.ogg"));
 		
 		// Input processing

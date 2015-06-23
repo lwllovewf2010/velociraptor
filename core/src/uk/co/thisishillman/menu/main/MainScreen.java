@@ -67,7 +67,6 @@ public class MainScreen implements Screen {
 		// Init background texture
 		this.backingTex = new Texture(Gdx.files.internal("images/background.jpg"));
 		this.background = new Image(backingTex);
-		
 		this.handler.getStageObject().addActor(background);
 				
 		// Init labels
@@ -119,6 +118,11 @@ public class MainScreen implements Screen {
 			public void clicked(InputEvent ev, float x, float y) {
 				handler.getClickSound().play(Settings.EFFECT_VOLUME);
 				handler.goToOptionsScreen();
+				
+				background.remove();
+				optionsLabel.remove();
+				newGameLabel.remove();
+				exitLabel.remove();
 			}
 		});
 		this.handler.getStageObject().addActor(optionsLabel);
