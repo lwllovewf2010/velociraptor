@@ -11,7 +11,7 @@
  * 
  * For more information please contact business<@>thisishillman.co.uk
  */
-package uk.co.thisishillman.menu.main;
+package uk.co.thisishillman.menus.main;
 
 import uk.co.thisishillman.MainGame;
 import uk.co.thisishillman.Settings;

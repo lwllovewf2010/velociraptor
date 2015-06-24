@@ -13,9 +13,10 @@
  */
 package uk.co.thisishillman;
 
-import uk.co.thisishillman.menu.SplashRotator;
-import uk.co.thisishillman.menu.SplashScreen;
-import uk.co.thisishillman.menu.main.MainMenuHandler;
+import uk.co.thisishillman.menus.loading.LoadingScreen;
+import uk.co.thisishillman.menus.loading.SplashRotator;
+import uk.co.thisishillman.menus.loading.SplashScreen;
+import uk.co.thisishillman.menus.main.MainMenuHandler;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -58,9 +59,11 @@ public class MainGame extends Game  {
 	 */
 	public void moveToMainMenu() {
 		splashRotator = null;
-		menuHandler = new MainMenuHandler(this, stage);
+		
+		setScreen(new LoadingScreen(stage));
+		/*menuHandler = new MainMenuHandler(this, stage);
 		menuHandler.initialise();
-		menuHandler.goToMainScreen();
+		menuHandler.goToMainScreen();*/
 	}
 	
 	/**

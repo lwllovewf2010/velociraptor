@@ -11,7 +11,7 @@
  * 
  * For more information please contact business<@>thisishillman.co.uk
  */
-package uk.co.thisishillman.menu;
+package uk.co.thisishillman.menus.loading;
 
 import java.util.Arrays;
 import java.util.LinkedList;

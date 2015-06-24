@@ -11,7 +11,7 @@
  * 
  * For more information please contact business<@>thisishillman.co.uk
  */
-package uk.co.thisishillman.menu.main;
+package uk.co.thisishillman.menus.main;
 
 import uk.co.thisishillman.Settings;
 import uk.co.thisishillman.text.FontStore;
@@ -56,12 +56,6 @@ public class OptionsScreen implements Screen {
 	// Label to return to main menu
 	private Label returnLabel;
 	
-	// Background texture
-	private Texture backingTex;
-	
-	// Background image
-	private Image background;
-	
 	/**
 	 * Initialise a new TextScreen with the input text
 	 * 
@@ -76,11 +70,6 @@ public class OptionsScreen implements Screen {
 	 */
 	@Override
 	public void show() {
-		// Init background texture
-		this.backingTex = new Texture(Gdx.files.internal("images/background.jpg"));
-		this.background = new Image(backingTex);
-		
-		this.handler.getStageObject().addActor(background);
 				
 		// Init labels
 		initialiseLabelStyles();
@@ -128,7 +117,6 @@ public class OptionsScreen implements Screen {
 	 */
 	@Override
 	public void dispose() {
-		if(backingTex != null) backingTex.dispose();
 	}
 	
 	/**
@@ -145,8 +133,6 @@ public class OptionsScreen implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		if(returnLabel != null)  	returnLabel.setBounds(width - 130, 25, 100, 30);
-		
-		if(background != null) background.setBounds(0, 0, width, height);
 	}
 
 	/**

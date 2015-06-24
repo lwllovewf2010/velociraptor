@@ -11,7 +11,7 @@
  * 
  * For more information please contact business<@>thisishillman.co.uk
  */
-package uk.co.thisishillman.menu.main;
+package uk.co.thisishillman.menus.main;
 
 import uk.co.thisishillman.Settings;
 import uk.co.thisishillman.text.FontStore;
@@ -44,12 +44,6 @@ public class ExitScreen implements Screen {
 	// UI Label styles
 	private LabelStyle labelStyle, hoverStyle;
 	
-	// Background texture
-	private Texture backingTex;
-	
-	// Background image
-	private Image background;
-	
 	/**
 	 * Initialise a new exit screen
 	 * 
@@ -64,11 +58,6 @@ public class ExitScreen implements Screen {
 	 */
 	@Override
 	public void show() {
-		// Init background texture
-		this.backingTex = new Texture(Gdx.files.internal("images/background.jpg"));
-		this.background = new Image(backingTex);
-		this.handler.getStageObject().addActor(background);
-				
 		// Init labels
 		initialiseLabels();
 	}
@@ -135,7 +124,6 @@ public class ExitScreen implements Screen {
 	 */
 	@Override
 	public void dispose() {
-		if(backingTex != null) backingTex.dispose();
 	}
 	
 	/**
@@ -154,8 +142,6 @@ public class ExitScreen implements Screen {
 		if(descLabel != null)   descLabel.setBounds(15, (height / 2) - 10, width - 30, 20);
 		if(yesLabel != null)  	yesLabel.setBounds(width - 130, 25, 100, 30);
 		if(noLabel != null) 	noLabel.setBounds(30, 25, 200, 30);
-		
-		if(background != null) background.setBounds(0, 0, width, height);
 	}
 
 	/**

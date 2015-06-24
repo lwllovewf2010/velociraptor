@@ -11,17 +11,18 @@
  * 
  * For more information please contact business<@>thisishillman.co.uk
  */
-package uk.co.thisishillman.menu;
+package uk.co.thisishillman.menus.loading;
 
-import uk.co.thisishillman.sprites.ImageAccessor;
+import uk.co.thisishillman.text.FontStore;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.utils.Align;
 
 /**
  * Simple screen for displaying a logo on a black background that 
@@ -29,28 +30,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * 
  * @author Michael Hillman
  */
-public class SplashScreen implements Screen {
+public class LoadingScreen implements Screen {
 
-	// Initial delay in milliseconds
-	public static final int DELAY    = 1500;
-	
 	// Fade duration in milliseconds
 	public static final int DURATION = 2500;
 	
 	// Manager for fading tween
 	private final TweenManager tweenManager;
 	
-	// File name of sprite texture file
-	private final String spriteName;
-	
 	// Main stage holding screen
 	private final Stage stage;
 	
-	// Image for texture;
-	private Image image;
+	// Label for snippet text
+	private Label snippetLabel;
 	
-	// Texture for main sprite
-	private Texture texture;
+	private LabelStyle labelStyle;
 	
 	// Time variables for updating the tween manager
 	private int startTime, deltaTime;
@@ -59,11 +53,9 @@ public class SplashScreen implements Screen {
 	 * Initialise a new fade screen with the input sprite
 	 * 
 	 * @param stage
-	 * @param spriteName
 	 */
-	public SplashScreen(Stage stage, String spriteName) {
+	public LoadingScreen(Stage stage) {
 		this.stage = stage;
-		this.spriteName = spriteName;
 		this.tweenManager = new TweenManager();
 	}
 	
@@ -72,16 +64,20 @@ public class SplashScreen implements Screen {
 	 */
 	@Override
 	public void show() {
-		texture = new Texture(Gdx.files.internal("images/" + spriteName));
-		image   = new Image(texture);
+		// Initialise label style
+		labelStyle = new LabelStyle(FontStore.getFont("minecraftia", 14), Color.WHITE);
 		
-		stage.addActor(image);
+		snippetLabel = new Label(SnippetPool.getRandomSnippet(), labelStyle);
+		snippetLabel.setAlignment(Align.left);
+		snippetLabel.setWrap(true);
+		this.stage.addActor(snippetLabel);
 		
-		Tween.registerAccessor(Image.class, new ImageAccessor());
+		Tween.registerAccessor(LabelStyle.class, new LabelStyleAccessor());
 		
-		Tween.to(image, ImageAccessor.FADE, DURATION)
-			.delay(DELAY)
+		Tween.to(labelStyle, LabelStyleAccessor.FADE, DURATION)
+			.delay(5000.0f)
 			.target(0.0f)
+			.repeatYoyo(99, 1000.0f)
 			.start(tweenManager);
 	}
 
@@ -90,7 +86,6 @@ public class SplashScreen implements Screen {
 	 */
 	@Override
 	public void dispose() {
-		texture.dispose();
 		tweenManager.killAll();
 	}
 	
@@ -102,17 +97,12 @@ public class SplashScreen implements Screen {
 		dispose();
 	}
 
-	
 	/**
 	 * Re-center the sprite after window resize
 	 */
 	@Override
 	public void resize(int width, int height) { 
-		float xPos = ( width - image.getWidth() ) / 2;
-		float yPos = (height - image.getHeight()) / 2;
-		
-		image.setX(xPos);
-		image.setY(yPos);
+		if(snippetLabel != null) snippetLabel.setBounds(25, height - 400, width - 100, 400);
 	}
 
 	/**

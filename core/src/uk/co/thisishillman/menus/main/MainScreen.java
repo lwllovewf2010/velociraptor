@@ -11,18 +11,14 @@
  * 
  * For more information please contact business<@>thisishillman.co.uk
  */
-package uk.co.thisishillman.menu.main;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+package uk.co.thisishillman.menus.main;
 
 import uk.co.thisishillman.Settings;
 import uk.co.thisishillman.text.FontStore;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -30,25 +26,20 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 
 /**
- * Scrollable credits screen
+ * Displays a single main menu screen
  * 
  * @author Michael Hillman
  */
-public class CreditsScreen implements Screen {
+public class MainScreen implements Screen {
 
-	// Main menu handler
+	// Menu handler
 	private final MainMenuHandler handler;
 	
-	// Scroll pane containing credits
-	private ScrollPane scroll;
-	
 	// UI Labels
-	private Label returnLabel, creditsLabel;
+	private Label newGameLabel, optionsLabel, creditsLabel, exitLabel;
 	
 	// UI Label styles
 	private LabelStyle labelStyle, hoverStyle;
@@ -60,16 +51,16 @@ public class CreditsScreen implements Screen {
 	private Image background;
 	
 	/**
-	 * Initialise a new exit screen
+	 * Initialise a new TextScreen with the input text
 	 * 
 	 * @param handler
 	 */
-	public CreditsScreen(MainMenuHandler handler) {
+	public MainScreen(MainMenuHandler handler) {
 		this.handler = handler;
 	}
 	
 	/** 
-	 * Initialise assets and labels
+	 * Create sprite batches and initialise fonts
 	 */
 	@Override
 	public void show() {
@@ -80,14 +71,6 @@ public class CreditsScreen implements Screen {
 				
 		// Init labels
 		initialiseLabels();
-		readCreditsFile();
-		
-		// Init scroll panel
-		this.scroll = new ScrollPane(creditsLabel);
-		this.scroll.setForceScroll(true, true);
-		this.scroll.setScrollY(0);
-		this.scroll.setScrollX(0);
-		this.handler.getStageObject().addActor(scroll);
 	}
 	
 	/**
@@ -97,76 +80,93 @@ public class CreditsScreen implements Screen {
 		labelStyle = new LabelStyle(FontStore.getFont("minecraftia", 16), Color.WHITE);
 		hoverStyle = new LabelStyle(FontStore.getFont("minecraftia", 14), Color.GRAY);
 		
-		// Initialise return label
-		returnLabel = new Label("Return", labelStyle);
-		returnLabel.addListener(new ClickListener() {
+		// Initialise exit label
+		exitLabel = new Label("Exit", labelStyle);
+		exitLabel.addListener(new ClickListener() {
 			@Override
 			public void enter(InputEvent ev, float x, float y, int pt, Actor from) {
-				returnLabel.setStyle(hoverStyle);
+				exitLabel.setStyle(hoverStyle);
 			}
 			
 			@Override
 			public void exit(InputEvent ev, float x, float y, int pt, Actor to) {
-				returnLabel.setStyle(labelStyle);
+				exitLabel.setStyle(labelStyle);
 			}
 			
 			@Override
 			public void clicked(InputEvent ev, float x, float y) {
 				handler.getClickSound().play(Settings.EFFECT_VOLUME);
-				handler.goToMainScreen();
-				
-				returnLabel.remove();
-				creditsLabel.remove();
-				scroll.remove();
-				background.remove();
+				handler.goToExitScreen();
 			}
 		});
-		this.handler.getStageObject().addActor(returnLabel);
+		this.handler.getStageObject().addActor(exitLabel);
 		
-		// Initialise Credits label
-		creditsLabel = new Label("", labelStyle);
-		creditsLabel.setAlignment(Align.center);
-		creditsLabel.setFillParent(true);
-		
-		this.handler.getStageObject().addActor(creditsLabel);
-	}
-	
-	/**
-	 * Read the credits.txt file
-	 */
-	private void readCreditsFile() {
-		StringBuilder builder = new StringBuilder();
-		
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		if (classLoader == null) classLoader = Class.class.getClassLoader();
-		
-		BufferedReader buffReader = null;
-		InputStreamReader inStreamReader = null;
-		InputStream inStream = null;
-		
-		try {
-			inStream = classLoader.getResourceAsStream("credits.txt");
-			inStreamReader = new InputStreamReader(inStream);
-			buffReader = new BufferedReader(inStreamReader);
-			
-			String line = null;
-			
-			while((line = buffReader.readLine()) != null) {
-				builder.append(line + "\n");
+		// Initialise options label
+		optionsLabel = new Label("Options", labelStyle);
+		optionsLabel.addListener(new ClickListener() {
+			@Override
+			public void enter(InputEvent ev, float x, float y, int pt, Actor from) {
+				optionsLabel.setStyle(hoverStyle);
 			}
 			
-		} catch(IOException ioExcep) {
-			System.err.println("ERROR: Could not read in credits.txt file.");
+			@Override
+			public void exit(InputEvent ev, float x, float y, int pt, Actor to) {
+				optionsLabel.setStyle(labelStyle);
+			}
 			
-		} finally {
-			try {
-				inStream.close();
-				inStreamReader.close();
-				buffReader.close();
-			} catch(IOException closeExcep) { }
-		}
+			@Override
+			public void clicked(InputEvent ev, float x, float y) {
+				optionsLabel.remove();
+				newGameLabel.remove();
+				exitLabel.remove();
+				creditsLabel.remove();
+				
+				handler.getClickSound().play(Settings.EFFECT_VOLUME);
+				handler.goToOptionsScreen();
+			}
+		});
+		this.handler.getStageObject().addActor(optionsLabel);
 		
-		creditsLabel.setText(builder.toString());
+		// Initialise new game label
+		newGameLabel = new Label("New Game", labelStyle);
+		newGameLabel.addListener(new ClickListener() {
+			@Override
+			public void enter(InputEvent ev, float x, float y, int pt, Actor from) {
+				newGameLabel.setStyle(hoverStyle);
+			}
+			
+			@Override
+			public void exit(InputEvent ev, float x, float y, int pt, Actor to) {
+				newGameLabel.setStyle(labelStyle);
+			}
+			
+			@Override
+			public void clicked(InputEvent ev, float x, float y) {
+				handler.getClickSound().play(Settings.EFFECT_VOLUME);
+			}
+		});
+		this.handler.getStageObject().addActor(newGameLabel);
+		
+		// Initialise credits label
+		creditsLabel = new Label("Credits", labelStyle);
+		creditsLabel.addListener(new ClickListener() {
+			@Override
+			public void enter(InputEvent ev, float x, float y, int pt, Actor from) {
+				creditsLabel.setStyle(hoverStyle);
+			}
+
+			@Override
+			public void exit(InputEvent ev, float x, float y, int pt, Actor to) {
+				creditsLabel.setStyle(labelStyle);
+			}
+
+			@Override
+			public void clicked(InputEvent ev, float x, float y) {
+				handler.getClickSound().play(Settings.EFFECT_VOLUME);
+				handler.goToCreditsScreen();
+			}
+		});
+		this.handler.getStageObject().addActor(creditsLabel);
 	}
 
 	/**
@@ -190,8 +190,10 @@ public class CreditsScreen implements Screen {
 	 */
 	@Override
 	public void resize(int width, int height) {
-		if(returnLabel != null) returnLabel.setBounds(width - 130, 25, 100, 30);
-		if(scroll != null) scroll.setBounds(100, 150, width - 200, height - 150);
+		if(exitLabel != null)    exitLabel.setBounds(   30, 15, 100, 30);
+		if(creditsLabel != null) creditsLabel.setBounds(30, 45, 100, 30);
+		if(optionsLabel != null) optionsLabel.setBounds(30, 75, 100, 30);
+		if(newGameLabel != null) newGameLabel.setBounds(30, 105, 100, 30);
 		
 		if(background != null) background.setBounds(0, 0, width, height);
 	}
@@ -200,10 +202,10 @@ public class CreditsScreen implements Screen {
 	 * Main render loop, draws text on screen
 	 */
 	@Override
-	public void render(float delta) {
-		// Nothing!
+	public void render(float delta) { 
+		// Nothing?
 	}
-
+	
 	// Not used
 	@Override
 	public void pause() { }
