@@ -15,13 +15,13 @@ package uk.co.thisishillman.menus.loading;
 
 import aurelienribon.tweenengine.TweenAccessor;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 /**
  * 
  * @author Michael Hillman
  */
-public class LabelStyleAccessor implements TweenAccessor<LabelStyle> {
+public class LabelAccessor implements TweenAccessor<Label> {
 
 	// Identifier for fade mode
 	public static final int FADE = 0;
@@ -30,11 +30,11 @@ public class LabelStyleAccessor implements TweenAccessor<LabelStyle> {
 	 * 
 	 */
 	@Override
-	public int getValues(LabelStyle target, int tweenType, float[] returnValues) {
+	public int getValues(Label target, int tweenType, float[] returnValues) {
 
 		switch(tweenType) {
 			case FADE :
-				returnValues[0] = target.fontColor.a;
+				returnValues[0] = target.getColor().a;
 				return 1;
 		}
 		
@@ -45,11 +45,11 @@ public class LabelStyleAccessor implements TweenAccessor<LabelStyle> {
 	 * 
 	 */
 	@Override
-	public void setValues(LabelStyle target, int tweenType, float[] newValues) {
+	public void setValues(Label target, int tweenType, float[] newValues) {
 		
 		switch(tweenType) {
 			case FADE :
-				target.fontColor.a = newValues[0];
+				target.getColor().a = newValues[0];
 				break;
 		}
 	}

@@ -72,10 +72,10 @@ public class LoadingScreen implements Screen {
 		snippetLabel.setWrap(true);
 		this.stage.addActor(snippetLabel);
 		
-		Tween.registerAccessor(LabelStyle.class, new LabelStyleAccessor());
+		Tween.registerAccessor(Label.class, new LabelAccessor());
 		
-		Tween.to(labelStyle, LabelStyleAccessor.FADE, DURATION)
-			.delay(5000.0f)
+		Tween.to(snippetLabel, LabelAccessor.FADE, DURATION)
+			.delay(1000.0f)
 			.target(0.0f)
 			.repeatYoyo(99, 1000.0f)
 			.start(tweenManager);
