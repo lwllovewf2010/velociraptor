@@ -39,6 +39,8 @@ public class MainGame extends Game  {
 	// Scene2D stage
 	private Stage stage;
 	
+	private LoadingScreen loading;
+	
 	/**
 	 * Initialise scene 2d variables
 	 */
@@ -58,9 +60,11 @@ public class MainGame extends Game  {
 	 * 
 	 */
 	public void moveToMainMenu() {
-		splashRotator = null;
+		//splashRotator = null;
 		
-		setScreen(new LoadingScreen(stage));
+		loading = new LoadingScreen(stage);
+		setScreen(loading);
+		
 		/*menuHandler = new MainMenuHandler(this, stage);
 		menuHandler.initialise();
 		menuHandler.goToMainScreen();*/
@@ -98,6 +102,7 @@ public class MainGame extends Game  {
         stage.draw();
         
         if(splashRotator != null) splashRotator.update(this);
+        if(loading != null) loading.render(0.0f);
 	}
 
 	// Not used

@@ -31,12 +31,14 @@ import com.json.parsers.JsonParserFactory;
  */
 public class SnippetPool {
 
-	// List of snippets
-	private static List<String> snippets;
+	// Lists of snippets
+	private static List<String> UNUSED;
+	private static List<String> USED;
 	
 	// Initialise snippets
 	static {
-		snippets = new ArrayList<>();
+		UNUSED = new ArrayList<>();
+		USED = new ArrayList<>();
 		readSnippetsFile();
 	}
 	
@@ -60,7 +62,7 @@ public class SnippetPool {
 			
 			for(int i = 0; i < quotes.size(); i++) {
 				Map quote = (Map) quotes.get(i);
-				snippets.add(quote.get("text").toString());
+				UNUSED.add(quote.get("text").toString());
 			}
 			
 		} catch(Exception ioExcep) {
@@ -80,8 +82,16 @@ public class SnippetPool {
 	 * @return
 	 */
 	public static String getRandomSnippet() {
-		int index = new Random().nextInt(snippets.size());
-		return snippets.get(index);
+		if(UNUSED.isEmpty()) {
+			UNUSED.addAll(USED);
+			USED.clear();
+		}
+		
+		int index = new Random().nextInt(UNUSED.size());
+		String snippet = UNUSED.get(index);
+		UNUSED.remove(snippet);
+		USED.add(snippet);
+		return snippet;
 	}
 
 }

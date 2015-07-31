@@ -29,7 +29,7 @@ import com.badlogic.gdx.audio.Sound;
 public class SplashRotator {
 
 	// Milliseconds each splash screen should display
-	public static final int SCREEN_TIME = 4500;
+	public static final long SCREEN_TIME = 2500L;
 	
 	// Queue of all splash screens
 	private final LinkedList<SplashScreen> screens;
@@ -38,7 +38,7 @@ public class SplashRotator {
 	private SplashScreen currentScreen;
 	
 	// System time that last screen started (in ms)
-	private int screenStart;
+	private long screenStart = Long.MIN_VALUE;
 	
 	// Sound to play at each new screen
 	private Sound sfx;
@@ -69,6 +69,10 @@ public class SplashRotator {
 	 * @param game
 	 */
 	public void update(MainGame game) {
+		if(screenStart < 0) {
+			// Initial delay
+			screenStart = System.currentTimeMillis();
+		}
 		
 		// Dispose and do nothing if no screens are left
 		if(screens.isEmpty() && currentScreen == null) return;
@@ -76,7 +80,7 @@ public class SplashRotator {
 		if(currentScreen != null) currentScreen.render(0.0f);
 		
 		// Check to see if the limit is up for the current screen
-		int deltaTime = ((int) System.currentTimeMillis()) - screenStart;
+		long deltaTime = System.currentTimeMillis() - screenStart;
 		
 		if(deltaTime >= SCREEN_TIME) {
 			

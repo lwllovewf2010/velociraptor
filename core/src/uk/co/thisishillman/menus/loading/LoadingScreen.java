@@ -15,6 +15,7 @@ package uk.co.thisishillman.menus.loading;
 
 import uk.co.thisishillman.text.FontStore;
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Screen;
@@ -33,7 +34,7 @@ import com.badlogic.gdx.utils.Align;
 public class LoadingScreen implements Screen {
 
 	// Fade duration in milliseconds
-	public static final int DURATION = 2500;
+	public static final int DURATION = 3000;
 	
 	// Manager for fading tween
 	private final TweenManager tweenManager;
@@ -44,10 +45,8 @@ public class LoadingScreen implements Screen {
 	// Label for snippet text
 	private Label snippetLabel;
 	
-	private LabelStyle labelStyle;
-	
 	// Time variables for updating the tween manager
-	private int startTime, deltaTime;
+	private long startTime = Long.MIN_VALUE, deltaTime = Long.MIN_VALUE;
 	
 	/**
 	 * Initialise a new fade screen with the input sprite
@@ -59,25 +58,42 @@ public class LoadingScreen implements Screen {
 		this.tweenManager = new TweenManager();
 	}
 	
+	public Label getSnippetLabel() {
+		return snippetLabel;
+	}
+	
+	public TweenManager getTweenManager() {
+		return tweenManager;
+	}
+	
+	public void resetTweenStart() {
+		this.startTime = System.currentTimeMillis();
+	}
+	
 	/**
 	 * Initialise textures, sprites, tweens etc
 	 */
 	@Override
 	public void show() {
 		// Initialise label style
-		labelStyle = new LabelStyle(FontStore.getFont("minecraftia", 14), Color.WHITE);
+		LabelStyle labelStyle = new LabelStyle(FontStore.getFont("minecraftia", 12), Color.WHITE);
 		
-		snippetLabel = new Label(SnippetPool.getRandomSnippet(), labelStyle);
-		snippetLabel.setAlignment(Align.left);
+		String snippet = "\"" + SnippetPool.getRandomSnippet();
+		snippet = snippet.replaceAll(" - ", "\" - ");
+		
+		snippetLabel = new Label(snippet, labelStyle);
+		snippetLabel.setAlignment(Align.center);
 		snippetLabel.setWrap(true);
 		this.stage.addActor(snippetLabel);
 		
-		Tween.registerAccessor(Label.class, new LabelAccessor());
+	    Tween.registerAccessor(Label.class, new LabelAccessor());
+	    SnippetCallBack snippetCallBack = new SnippetCallBack(this);
 		
 		Tween.to(snippetLabel, LabelAccessor.FADE, DURATION)
-			.delay(1000.0f)
+			.delay(15_000.0f)
 			.target(0.0f)
-			.repeatYoyo(99, 1000.0f)
+			.setCallbackTriggers(TweenCallback.END)
+			.setCallback(snippetCallBack)
 			.start(tweenManager);
 	}
 
@@ -102,7 +118,7 @@ public class LoadingScreen implements Screen {
 	 */
 	@Override
 	public void resize(int width, int height) { 
-		if(snippetLabel != null) snippetLabel.setBounds(25, height - 400, width - 100, 400);
+		if(snippetLabel != null) snippetLabel.setBounds(width/4, height/4, width/2, height/2);
 	}
 
 	/**
@@ -112,10 +128,10 @@ public class LoadingScreen implements Screen {
 	 */
 	@Override
 	public void render(float delta) {
-		if(startTime <= 0) startTime = (int) System.currentTimeMillis();
+		if(startTime < 0) startTime = System.currentTimeMillis();
 		
-		deltaTime = ((int) System.currentTimeMillis() - startTime);
-		tweenManager.update(deltaTime / 150);	// Fudged as Tween's don't seem to actually work in milliseconds
+		deltaTime = (System.currentTimeMillis() - startTime) / 200;
+		tweenManager.update(deltaTime);	// Fudged as Tween's don't seem to actually work in milliseconds
 	}
 
 	// Not used

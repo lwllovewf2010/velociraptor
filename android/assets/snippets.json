@@ -1,10 +1,16 @@
 {
 	"quote": [
-		{ "text": "In every animal which has not passed the limit of its development, a more frequent and continuous use of any organ gradually strengthens, develops and enlarges that organ, and gives it a power proportional to the length of time it has been so used; while the permanent disuse of any organ imperceptibly weakens and deteriorates it, and progressively diminishes its functional capacity, until it finally disappears. - Jean-Baptiste Lamarck" },
+		{ "text": "In every animal which has not passed the limit of its development, a more frequent and continuous use of any organ gradually strengthens, develops and enlarges that organ, and gives it a power proportional to the length of time it has been so used. - Jean Baptiste Lamarck" },
+
+		{ "text": "The permanent disuse of any organ imperceptibly weakens and deteriorates it, and progressively diminishes its functional capacity, until it finally disappears. - Jean Baptiste Lamarck" },
 		
-		{ "text": "All the acquisitions or losses wrought by nature on individuals, through the influence of the environment in which their race has long been placed, and hence through the influence of the predominant use or permanent disuse of any organ; all these are preserved by reproduction to the new individuals which arise, provided that the acquired modifications are common to both sexes, or at least to the individuals which produce the young. - Jean-Baptiste Lamarck" },
+		{ "text": "All the acquisitions or losses wrought by nature on individuals... are preserved by reproduction to the new individuals which arise, provided that the acquired modifications are common to both sexes, or at least to the individuals which produce the young. - Jean Baptiste Lamarck" },
 		
-		{ "text": "Once we were blobs in the sea, and then fishes, and then lizards and rats and then monkeys, and hundreds of things in between. This hand was once a fin, this hand once had claws! In my human mouth I have the pointy teeth of a wolf and the chisel teeth of a rabbit and the grinding teeth of a cow! Our blood is as salty as the sea we used to live in! When we're frightened, the hair on our skin stands up, just like it did when we had fur. We are history! Everything we've ever been on the way to becoming us, we still are. - Terry Pratchett" },
+		{ "text": "Once we were blobs in the sea, and then fishes, and then lizards and rats and then monkeys, and hundreds of things in between. - Terry Pratchett" },
+		
+		{ "text": "This hand was once a fin, this hand once had claws! In my human mouth I have the pointy teeth of a wolf and the chisel teeth of a rabbit and the grinding teeth of a cow! - Terry Pratchett" },
+
+		{ "text": "Our blood is as salty as the sea we used to live in! When we're frightened, the hair on our skin stands up, just like it did when we had fur. We are history! Everything we've ever been on the way to becoming us, we still are. - Terry Pratchett" },
 		
 		{ "text": "Extinction is the rule. Survival is the exception. - Carl Sagan" },
 		
@@ -12,10 +18,30 @@
 		
 		{ "text": "One general law, leading to the advancement of all organic beings, namely, multiply, vary, let the strongest live and the weakest die. - Charles Darwin" },
 		
-		{ "text": "Nature does not process by leaps and bounds. - Carl Linnaeus" },
+		{ "text": "Nature does not progress by leaps and bounds. - Carl Linnaeus" },
 		
-		{ "text": "Let us investigate more closely this property common to animal and plant, this power of producing its likeness, this chain of successive existences of individuals, which constitutes the real existence of the species. - Georges-Louis Leclerc" },
+		{ "text": "Let us investigate more closely this property common to animal and plant, this power of producing its likeness, this chain of successive existences of individuals, which constitutes the real existence of the species. - Georges Louis Leclerc" },
 		
-		{ "text": "A grain in the balance will determine which individual shall live and which shall die - which variety or species shall increase in number, and which shall decrease, or finally become extinct. - Charles Darwin" }
+		{ "text": "A grain in the balance will determine which individual shall live and which shall die which variety or species shall increase in number, and which shall decrease, or finally become extinct. - Charles Darwin" },
+		
+		{ "text": "All living things contain a measure of madness that moves them in strange, sometimes inexplicable ways. This madness can be saving; it is part and parcel of the ability to adapt. Without it, no species would survive. - Yann Martel" },
+		
+		{ "text": "It is not the strongest or the most intelligent who will survive but those who can best manage change. - Leon C Megginson" },
+		
+		{ "text": "It has yet to be proven that intelligence has any survival value. - Arthur C Clarke" },
+		
+		{ "text": "If quick, I survive. If not quick, I am lost. This is death. - Sun Tzu" },
+		
+		{ "text": "Our own genomes carry the story of evolution, written in DNA, the language of molecular genetics, and the narrative is unmistakable. - Kenneth R Miller" },
+		
+		{ "text": "Islands are natural workshops of evolution. - Richard Dawkins" },
+		
+		{ "text": "Evolution is the fundamental idea in all of life science, in all of biology. - Bill Nye" },
+		
+		{ "text": "I never yet heard of a useless thing that was not ground out of existence by evolution sooner or later. - H G Wells" },
+		
+		{ "text": "These mysteries about how we evolved should not distract us from the indisputable fact that we did evolve. - Jerry A Coyne" },
+		
+		{ "text": "If the lambs were flying, wolves would have also the wings to fly! - Mehmet Murat Ildan" }
 	]
 }
