@@ -19,6 +19,7 @@ import java.util.Set;
 import uk.co.thisishillman.MainGame;
 import uk.co.thisishillman.Meta;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
@@ -51,6 +52,10 @@ public class DesktopLauncher {
 		config.resizable  = false;
 		config.width      = 800;
 		config.height     = 600;
+		
+		config.addIcon("images/window/128x128.png", Files.FileType.Internal);
+		config.addIcon("images/window/32x32.png", Files.FileType.Internal);
+		config.addIcon("images/window/16x16.png", Files.FileType.Internal);
 		
 		new LwjglApplication(new MainGame(), config);
 	}

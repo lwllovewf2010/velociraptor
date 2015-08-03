@@ -162,7 +162,8 @@ public class LoadingScreen implements Screen {
 		if(startTime < 0) startTime = System.currentTimeMillis();
 		stateTime += Gdx.graphics.getDeltaTime(); 
 		
-		tweenManager.update(stateTime);
+		deltaTime =  System.currentTimeMillis() - startTime;
+		tweenManager.update(deltaTime);
 		
         currentFrame = loadingAnimation.getKeyFrame(stateTime, true);  
         batch.begin();
