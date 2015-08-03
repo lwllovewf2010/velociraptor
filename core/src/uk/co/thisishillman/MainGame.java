@@ -60,14 +60,9 @@ public class MainGame extends Game  {
 	 * 
 	 */
 	public void moveToMainMenu() {
-		//splashRotator = null;
-		
-		loading = new LoadingScreen(stage);
-		setScreen(loading);
-		
-		/*menuHandler = new MainMenuHandler(this, stage);
+		menuHandler = new MainMenuHandler(this, stage);
 		menuHandler.initialise();
-		menuHandler.goToMainScreen();*/
+		menuHandler.goToMainScreen();
 	}
 	
 	/**

@@ -95,6 +95,11 @@ public class MainScreen implements Screen {
 			
 			@Override
 			public void clicked(InputEvent ev, float x, float y) {
+				optionsLabel.remove();
+				newGameLabel.remove();
+				exitLabel.remove();
+				creditsLabel.remove();
+				
 				handler.getClickSound().play(Settings.EFFECT_VOLUME);
 				handler.goToExitScreen();
 			}
@@ -162,6 +167,11 @@ public class MainScreen implements Screen {
 
 			@Override
 			public void clicked(InputEvent ev, float x, float y) {
+				optionsLabel.remove();
+				newGameLabel.remove();
+				exitLabel.remove();
+				creditsLabel.remove();
+				
 				handler.getClickSound().play(Settings.EFFECT_VOLUME);
 				handler.goToCreditsScreen();
 			}
