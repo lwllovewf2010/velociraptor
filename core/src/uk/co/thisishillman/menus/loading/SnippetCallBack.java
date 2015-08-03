@@ -50,7 +50,7 @@ public class SnippetCallBack implements TweenCallback {
 		
 		if( (tweenCount % 2) == 0) {
 			Tween.to(screen.getSnippetLabel(), LabelAccessor.FADE, LoadingScreen.DURATION)
-				.delay(15_000.0f)
+				.delay(10_000.0f)
 				.target(0.0f)
 				.setCallbackTriggers(TweenCallback.END)
 				.setCallback(this)

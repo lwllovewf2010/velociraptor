@@ -18,8 +18,14 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -47,6 +53,18 @@ public class LoadingScreen implements Screen {
 	
 	// Time variables for updating the tween manager
 	private long startTime = Long.MIN_VALUE, deltaTime = Long.MIN_VALUE;
+	
+	// Animation for loading icon
+	private Animation loadingAnimation;
+	
+	// Sprite batch to draw loading icon
+	private SpriteBatch batch;
+	
+	// Current frame of loading animation
+	private TextureRegion currentFrame;
+	
+	// Time elapsed since last render
+	private float stateTime;
 	
 	/**
 	 * Initialise a new fade screen with the input sprite
@@ -90,11 +108,24 @@ public class LoadingScreen implements Screen {
 	    SnippetCallBack snippetCallBack = new SnippetCallBack(this);
 		
 		Tween.to(snippetLabel, LabelAccessor.FADE, DURATION)
-			.delay(15_000.0f)
+			.delay(10_000.0f)
 			.target(0.0f)
 			.setCallbackTriggers(TweenCallback.END)
 			.setCallback(snippetCallBack)
 			.start(tweenManager);
+		
+		// Initialise loading icon
+		Texture loadingSheet = new Texture(Gdx.files.internal("images/loading.png"));
+		TextureRegion[] loadingFrames = new TextureRegion[4 * 2];
+		TextureRegion[][] tmp = TextureRegion.split(loadingSheet, 32, 32);
+		int index = 0;
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 4; j++) {
+                loadingFrames[index++] = tmp[i][j];
+            }
+        }
+        loadingAnimation = new Animation(0.150f, loadingFrames);
+        batch = new SpriteBatch();
 	}
 
 	/**
@@ -129,9 +160,14 @@ public class LoadingScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		if(startTime < 0) startTime = System.currentTimeMillis();
+		stateTime += Gdx.graphics.getDeltaTime(); 
 		
-		deltaTime = (System.currentTimeMillis() - startTime) / 200;
-		tweenManager.update(deltaTime);	// Fudged as Tween's don't seem to actually work in milliseconds
+		tweenManager.update(stateTime);
+		
+        currentFrame = loadingAnimation.getKeyFrame(stateTime, true);  
+        batch.begin();
+        batch.draw(currentFrame, Gdx.graphics.getWidth() - 50, 25);             
+        batch.end();
 	}
 
 	// Not used
